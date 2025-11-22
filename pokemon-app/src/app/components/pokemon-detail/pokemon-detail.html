@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-12">
+    <h1 class="h2 mb-4" aria-label="Detalles del Pokémon">Detalles de {{ pokemon?.name | titlecase }}</h1>
+    
+    @if (pokemon) {
+      <div class="card" role="article">
+        <div class="card-body">
+          <img [src]="getSpriteUrl()" [alt]="'Sprite de ' + (pokemon.name)| uppercase" class="img-fluid mb-3" style="max-width: 200px; min-width: 200px;">
+          <p><strong>ID:</strong> {{ pokemon.id | number }}</p>
+          <p><strong>Nombre:</strong> {{ pokemon.name | lowercase }}</p>
+          <p><strong>Altura:</strong> {{ pokemon.height | number }} dm</p>
+          <p><strong>Peso:</strong> {{ pokemon.weight | number }} kg</p>
+          <p><strong>Tipos: </strong> 
+            @for (type of pokemon.types; track type.type.name; let last = $last) {
+                  <span class="badge bg-secondary me-1">{{ type.type.name | uppercase }}</span>
+                  @if (!last) { , }
+                }</p>
+          
+          <p><strong>Habilidades: </strong> 
+            @for (ability of pokemon.abilities; track ability.ability.name; let last = $last) {
+                  <span class="badge bg-secondary me-1">{{ ability.ability.name | titlecase }}</span>
+                  @if (!last) { , }
+                }</p>
+          <a routerLink="/list" class="btn btn-secondary">Volver a Lista</a>
+          
+          <a routerLink="/search-type" class="btn btn-secondary ms-2">Buscar por Tipo</a>
+        </div>
+      </div>
+    } @else {
+      <div class="alert alert-warning" role="alert">Cargando detalles...</div>
+    }
+  </div>
+</div>

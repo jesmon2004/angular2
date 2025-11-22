@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-12">
+    <h1 class="h2 mb-4" aria-label="Lista de Pokémon">Lista de Pokémon</h1>
+    
+    
+    @if (pokemons.length > 0) {
+      <!-- Tabla con datos reales -->
+      <table class="table table-striped table-hover" role="table" aria-label="Tabla de Pokémon">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Altura (dm)</th>
+            <th scope="col">Peso (Kg)</th>
+            <th scope="col">Tipos</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (pokemon of pokemons; track pokemon.name) {
+            <tr>
+              <td>{{ pokemon.id | number }}</td> 
+              <td>{{ pokemon.name | uppercase }}</td> 
+              <td>{{ pokemon.height | number}}</td> 
+              <td>{{ pokemon.weight | number }}</td> 
+              <td>
+                @for (type of pokemon.types; track type.type.name; let last = $last) {
+                  <span class="badge bg-secondary me-1">{{ type.type.name | titlecase }}</span>
+                  @if (!last) { , }
+                }
+              </td> <!-- Tipos reales, con badges -->
+              <td>
+                <a [routerLink]="['/pokemon', pokemon.name]" class="btn btn-primary btn-sm" aria-label="Ver detalles de {{ pokemon.name | titlecase }}">Detalles</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      
+      <!-- Paginación -->
+      <nav aria-label="Paginación">
+        <ul class="pagination justify-content-center">
+          <li class="page-item"><button class="page-link btn btn-link" (click)="loadPrevious()">Anterior</button></li>
+          <li class="page-item"><button class="page-link btn btn-link" (click)="loadNext()">Siguiente</button></li>
+
+        </ul>
+      </nav>
+    } @else {
+      <div class="alert alert-warning" role="alert" aria-live="polite">No hay Pokémon disponibles.</div>
+    }
+  </div>
+</div>

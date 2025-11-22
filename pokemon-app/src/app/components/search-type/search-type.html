@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-12">
+        <h1 class="h2 mb-4" aria-label="Búsqueda por tipo de Pokémon">Buscar por Tipo</h1>
+
+
+        <!-- Formulario -->
+  <form (ngSubmit)="searchByType()">
+    <div class="row g-2 align-items-center">
+      <div class="col-auto">
+        <label for="typeSelect" class="col-form-label">Tipo:</label>
+      </div>
+      <div class="col-auto flex-grow-1">
+        
+        <select 
+          id="typeSelect" 
+          class="form-select" 
+          [(ngModel)]="selectedType" 
+          name="selectedType" 
+          
+          required>
+          <option value="" disabled selected>-- Elige un tipo --</option>
+          @for (type of types$ | async; track type.name) {
+            <option [value]="type.name">{{ type.name | titlecase }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary" [disabled]="!selectedType">
+          Buscar
+        </button>
+      </div>
+    </div>
+  </form>
+
+        @if (typePokemons && typePokemons.length > 0) {
+        <div class="row" aria-label="Resultados por tipo">
+            @for (pokemon of typePokemons; track pokemon.pokemon.name) {
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ pokemon.pokemon.name | uppercase }}</h5>
+                        <a [routerLink]="['/pokemon', pokemon.pokemon.name]"
+                            class="btn btn-outline-primary">Detalles</a>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        } 
+    </div>
+</div>

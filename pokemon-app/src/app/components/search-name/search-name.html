@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-12">
+    <h1 class="h2 mb-4" aria-label="Búsqueda por nombre de Pokémon">Buscar por Nombre</h1>
+
+    
+    <form (ngSubmit)="searchByName()">
+    <div class="input-group mb-3">
+      <input 
+        type="text" 
+        class="form-control" 
+        placeholder="Ej: pikachu" 
+        [(ngModel)]="searchTerm" 
+        name="searchTerm" 
+        required>
+      <button class="btn btn-primary" type="submit" >
+        Buscar
+      </button>
+    </div>
+    <small class="text-muted">Escribe el nombre exacto del Pokémon.</small>
+  </form>
+
+    @if (foundPokemon) {
+    <div class="card mt-3" role="article" aria-label="Resultado de búsqueda">
+      <div class="card-body">
+        <h2 class="card-title">{{ foundPokemon.name | titlecase }}</h2>
+        <img [src]="getSpriteUrl()" [alt]="'Sprite de ' + (foundPokemon.name)" class="img-fluid mb-3" style="max-width: 200px; min-width: 200px;">
+        <p>ID: {{ foundPokemon.id | number }}</p>
+        <p>Altura: {{ foundPokemon.height | number:'1.1-1' }} dm</p>
+        <p>Peso: {{ foundPokemon.weight | number:'1.1-1' }} kg</p>
+        <p><strong>Habilidades: </strong>
+
+          @for (ability of foundPokemon.abilities; track ability.ability.name; let last = $last) {
+          <span class="badge bg-secondary me-1">{{ ability.ability.name | titlecase }}</span>
+          @if (!last) { , }
+          }
+        </p>
+      </div>
+    </div>
+    } @else if (foundPokemon === null && searchError) {
+    <div class="alert alert-danger mt-3" role="alert" aria-label="Error de búsqueda">
+      No se encontró ningún Pokémon con el nombre "{{ searchTerm }}". Por favor, verifica el nombre e intenta nuevamente. 
+    </div>
+    }
+  </div>
+</div>
